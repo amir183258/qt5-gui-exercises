@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPainter>
+#include <QtSvg/QSvgGenerator>
 #include "ui_mainwindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -21,8 +22,10 @@ public:
 
 private:
 	Ui::MainWindow* ui;
+	void paintAll(QSvgGenerator* generator);
 
 private slots:
+	void on_actionSave_as_SVG_triggered();
 
 };
 

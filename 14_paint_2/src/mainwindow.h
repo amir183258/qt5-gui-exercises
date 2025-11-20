@@ -40,8 +40,18 @@ private:
 	QColor brushColor;
 
 private slots:
-	void on_actionSave_triggered();
+	void on_action2px_triggered();
+	void on_action5px_triggered();
+	void on_action10px_triggered();
 
+	void on_actionBlack_triggered();
+	void on_actionWhite_triggered();
+	void on_actionRed_triggered();
+	void on_actionGreen_triggered();
+	void on_actionBlue_triggered();
+
+	void on_actionClear_triggered();
+	void on_actionSave_triggered();
 };
 
 #endif

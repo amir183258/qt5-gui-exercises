@@ -1,4 +1,8 @@
 #include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QFile>
+#include <QFileInfo>
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget* parent):
@@ -31,7 +35,7 @@ void MainWindow::getFileList() {
 
 void MainWindow::downloadFileListFinished() {
 	if (downloadFileListReply->error() != QNetworkReply::NoError)
-		QMessageBox::warning(this, "Failed", "Failed to load file lsit: " +
+		QMessageBox::warning(this, "Failed", "Failed to load file list: " +
 				downloadFileListReply->errorString());
 	else {
 		QByteArray responseData;
@@ -62,22 +66,90 @@ void MainWindow::on_uploadButton_clicked() {
 	uploadFileName = fileInfo.fileName();
 
 	QUrl ftpPath;
-	ftpPath.setUrl(ftpAddress + "share_folder/" + uploadFileName);
+	ftpPath.setUrl(ftpAddress + uploadFileName);
 	ftpPath.setUserName(username);
 	ftpPath.setPassword(password);
 	ftpPath.setPort(ftpPort);
 
 	if (file->open(QIODevice::ReadOnly)) {
-		ui->uploadProgress->setEnable(true);
+		ui->uploadProgress->setEnabled(true);
 		ui->uploadProgress->setValue(0);
 
 		QNetworkRequest request;
 		request.setUrl(ftpPath);
 
-		// TODO
 		uploadFileReply = manager->put(request, file);
-		connect(uploadFileReply
-
-
+		connect(uploadFileReply,
+				SIGNAL(uploadProgress(qint64, qint64)), this,
+				SLOT(uploadFileProgress(qint64, qint64)));
+		connect(uploadFileReply,
+				SIGNAL(finished()), this,
+				SLOT(uploadFileFinished()));
 	}
+	else
+		QMessageBox::warning(this, "Invalid File", "Failed to open file for upload");
+}
+
+void MainWindow::uploadFileProgress(qint64 bytesSent, qint64 bytesTotal) {
+	qint64 percentage = 100 * bytesSent / bytesTotal;
+	ui->uploadProgress->setValue((int) percentage);
+}
+
+void MainWindow::uploadFileFinished() {
+	if (uploadFileReply->error() != QNetworkReply::NoError)
+		QMessageBox::warning(this, "Failed", "Failed to upload file: " +
+				uploadFileReply->errorString());
+	else
+		QMessageBox::information(this, "Success", "File successfully uploaded.");
+
+	// Add new file to file list array if not exist yet
+	bool exists = false;
+	if (fileList.size() > 0)
+		for (int i = 0; i < fileList.size(); ++i)
+			if (fileList.at(i) == uploadFileName)
+				exists = true;
+	if (!exists)
+		fileList.append(uploadFileName);
+
+	// Create new files.txt
+	QString fileName = "files.txt";
+	QFile* file = new QFile(qApp->applicationDirPath() + "/" + fileName);
+	file->open(QIODevice::ReadWrite);
+	if (fileList.size() > 0)
+		for (int j = 0; j < fileList.size(); ++j)
+			if (fileList.at(j) != "")
+				file->write(QString(fileList.at(j) + ",").toUtf8());
+	file->close();
+	
+	// Re-open the file
+	QFile* newFile = new QFile(qApp->applicationDirPath() + "/" + fileName);
+	if (newFile->open(QIODevice::ReadOnly)) {
+		// Update file list to server
+		QUrl ftpPath;
+		ftpPath.setUrl(ftpAddress + fileName);
+		ftpPath.setUserName(username);
+		ftpPath.setPassword(password);
+		ftpPath.setPort(ftpPort);
+
+		QNetworkRequest request;
+		request.setUrl(ftpPath);
+		uploadFileListReply = manager->put(request, newFile);
+		connect(uploadFileListReply, SIGNAL(finished()), this,
+				SLOT(uploadFileListFinished()));
+		file->close();
+	}
+}
+
+void MainWindow::uploadFileListFinished() {
+	if (uploadFileListReply->error() != QNetworkReply::NoError)
+		QMessageBox::warning(this, "Failed", "Failed to update file list: " +
+				uploadFileListReply->errorString());
+	else
+		getFileList();
+}
+
+// download files
+// TODO
+void MainWindow::on_setFolderButton_clicked() {
+
 }

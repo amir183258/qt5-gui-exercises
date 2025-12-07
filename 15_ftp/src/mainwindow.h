@@ -36,7 +36,7 @@ private:
 	QNetworkReply* uploadFileListReply;
 
 	QNetworkReply* downloadFileReply;
-	QNetworkReply* uploadFleReply;
+	QNetworkReply* uploadFileReply;
 
 	QStringList fileList;
 	QString downloadFileName;
@@ -51,8 +51,17 @@ public:
 private slots:
 	void downloadFileListFinished();
 	
+	// upload files
 	void on_openButton_clicked();
 	void on_uploadButton_clicked();
+
+	void uploadFileProgress(qint64 bytesSent, qint64 bytesTotal);
+	void uploadFileFinished();
+	void uploadFileListFinished();
+
+	// download files
+	// TODO
+	void on_setFolderButton_clicked();
 };
 
 #endif

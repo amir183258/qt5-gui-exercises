@@ -60,8 +60,11 @@ private slots:
 	void uploadFileListFinished();
 
 	// download files
-	// TODO
 	void on_setFolderButton_clicked();
+	void on_fileList_itemDoubleClicked(QListWidgetItem *item);
+
+	void downloadFileProgress(qint64 byteRecieved, qint64 bytesTotal);
+	void downloadFileFinished();
 };
 
 #endif

@@ -16,11 +16,11 @@ set(UI_FILES
 qt5_wrap_ui(UI_HEADERS ${UI_FILES})
 
 
-#set(RESOURCE_FILES
-#    resources.qrc
-#)
+set(RESOURCE_FILES
+    resources.qrc
+)
 
-#qt5_add_resources(RESOURCE_SOURCES ${RESOURCE_FILES})
+qt5_add_resources(RESOURCE_SOURCES ${RESOURCE_FILES})
 
 set(SOURCES
     main.cpp

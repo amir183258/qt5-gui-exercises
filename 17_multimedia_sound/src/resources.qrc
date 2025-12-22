@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>html/test.html</file>
+        <file>icons/pause.png</file>
+        <file>icons/play.png</file>
+        <file>icons/stop.png</file>
+        <file>icons/volume.png</file>
     </qresource>
 </RCC>

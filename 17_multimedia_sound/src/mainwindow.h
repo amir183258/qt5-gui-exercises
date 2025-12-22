@@ -3,9 +3,11 @@
 
 #include <QMainWindow>
 
+#include <QDebug>
 #include <QFileDialog>
-#include <QPixmap>
-#include <QPainter>
+#include <QMediaPlayer>
+#include <QMediaMetaData>
+#include <QTime>
 
 #include "ui_mainwindow.h"
 
@@ -18,20 +20,17 @@ QT_END_NAMESPACE
 class MainWindow: public QMainWindow {
 	Q_OBJECT
 private:
-	Ui::MainWindow* ui;
+	Ui::MainWindow *ui;
+	QMediaPlayer *player;
 
-	QPixmap* imageBuffer;
-	QPixmap imagePixmap;
-	
 public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow() {}
 
-	void resizeImage();
-	void paintEvent(QPaintEvent *event);
+	void stateChanged(QMediaPlayer::State state);
+	void positionChanged(qint64 position);
 
 private slots:
-	void on_actionOpen_triggered();
 
 };
 

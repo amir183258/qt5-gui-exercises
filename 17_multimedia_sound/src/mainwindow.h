@@ -27,10 +27,18 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow() {}
 
+private slots:
 	void stateChanged(QMediaPlayer::State state);
 	void positionChanged(qint64 position);
 
-private slots:
+	void on_playButton_clicked();
+	void on_pauseButton_clicked();
+	void on_stopButton_clicked();
+
+	void on_volume_sliderMoved(int position);
+	void on_progressbar_sliderMoved(int position);
+
+	void on_actionOpen_File_triggered();
 
 };
 

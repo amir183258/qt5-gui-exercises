@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="songNameDisplay">
       <property name="text">
        <string>No song</string>
       </property>
@@ -25,14 +25,14 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QSlider" name="horizontalSlider">
+       <widget class="QSlider" name="progressbar">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="durationDisplay">
         <property name="text">
          <string>00:00:00</string>
         </property>
@@ -43,7 +43,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="playButton">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -63,7 +63,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="pauseButton">
         <property name="text">
          <string/>
         </property>
@@ -74,7 +74,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="stopButton">
         <property name="text">
          <string/>
         </property>
@@ -126,7 +126,10 @@
        </widget>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider_2">
+       <widget class="QSlider" name="volume">
+        <property name="value">
+         <number>50</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -149,9 +152,15 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionOpen_File"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
+  <action name="actionOpen_File">
+   <property name="text">
+    <string>Open File</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="resources.qrc"/>
